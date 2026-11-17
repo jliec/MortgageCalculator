@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Home Sale Decision Calculator</title>
+<style>
+:root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:#17233b;background:#f4f6fa;font-synthesis:none}
+*{box-sizing:border-box}body{margin:0;padding:28px 16px 60px}.wrap{max-width:1080px;margin:auto}
+header{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:22px}
+h1{font-size:clamp(26px,4vw,38px);letter-spacing:-.04em;margin:0 0 7px}.sub{color:#68758b;margin:0}
+.pill{background:#e8eef8;color:#31517e;padding:8px 12px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}
+.layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,.9fr);gap:18px;align-items:start}
+.card{background:white;border:1px solid #e2e7ef;border-radius:18px;padding:20px;box-shadow:0 5px 20px #263b5a08;margin-bottom:16px}
+h2{font-size:18px;margin:0 0 16px;letter-spacing:-.02em}h3{font-size:14px;margin:18px 0 10px;color:#41516a}
+label{display:block;font-size:12px;font-weight:700;color:#56647a;margin:0 0 6px}
+input{width:100%;border:1px solid #d9e0ea;border-radius:9px;padding:10px 11px;font:inherit;font-size:14px;color:#17233b;background:#fff}
+input:focus{outline:3px solid #dce9ff;border-color:#6e94ca}
+.field{margin-bottom:12px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.hero{background:linear-gradient(135deg,#173c70,#236c79);color:white;border-radius:16px;padding:20px;margin-bottom:14px}
+.hero .eyebrow{font-size:12px;color:#d4e3f4;font-weight:700}.big{font-size:clamp(30px,5vw,42px);font-weight:800;letter-spacing:-.04em;margin:6px 0}.muted{color:#9ba8ba;font-size:12px}
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:#f7f9fc;border-radius:12px;padding:12px}.stat span{display:block;color:#6a778b;font-size:11px;margin-bottom:5px}.stat strong{font-size:16px}
+.rows{display:grid;gap:9px}.line{display:flex;justify-content:space-between;gap:12px;font-size:13px}.line span:first-child{color:#647187}.line strong{font-variant-numeric:tabular-nums}
+.bar{height:9px;background:#edf1f6;border-radius:20px;overflow:hidden;margin-top:5px}.bar i{display:block;height:100%;background:#6888b6;border-radius:20px}.bar i.net{background:#15947e}
+button{border:0;border-radius:10px;padding:10px 13px;background:#1e477b;color:#fff;font-weight:700;cursor:pointer;font-size:13px}
+button.secondary{background:#edf2f8;color:#29486e}button.danger{background:#fff0f0;color:#a33b3b}button:hover{filter:brightness(.97)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.scenario{border:1px solid #e2e7ef;border-radius:12px;padding:13px;margin-top:10px}
+.scenario-head{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:8px}
+table{border-collapse:collapse;width:100%;font-size:12px}td,th{padding:9px 6px;border-bottom:1px solid #edf0f4;text-align:right}td:first-child,th:first-child{text-align:left}th{color:#738096;font-weight:700}
+.notice{font-size:11px;color:#778398;line-height:1.5;margin-top:15px}
+.negative{color:#b33f43}.positive{color:#14836f}
+@media(max-width:800px){.layout{grid-template-columns:1fr}header{display:block}.pill{display:inline-block;margin-top:12px}}
+@media(max-width:480px){body{padding:18px 11px 40px}.card{padding:15px}.fields{grid-template-columns:1fr}.stats{grid-template-columns:1fr 1fr}}
+@media print{body{background:white;padding:0}.card{box-shadow:none;break-inside:avoid}button,.pill{display:none}.layout{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><div><h1>Home Sale Decision Calculator</h1><p class="sub">Estimate your sale proceeds, test different prices and compare scenarios.</p></div><span class="pill">PRIVATE · LOCAL CALCULATOR</span></header>
+<div class="layout">
+<main>
+<section class="card">
+<h2>Sale price &amp; debt</h2>
+<div class="field"><label for="scenarioName">Scenario name</label><input id="scenarioName" value="Expected Sale"></div>
+<div class="fields">
+<div class="field"><label for="price">Expected selling price ($)</label><input id="price" type="number" min="0" step="1000" value="450000"></div>
+<div class="field"><label for="mortgage">Current mortgage payoff ($)</label><input id="mortgage" type="number" min="0" step="500" value="0"></div>
+<div class="field"><label for="debt">Additional debt owed on house ($)</label><input id="debt" type="number" min="0" step="500" value="0"></div>
+</div>
+<h3>Agent commissions</h3>
+<div class="fields">
+<div class="field"><label for="sellerCommission">Seller's agent commission (%)</label><input id="sellerCommission" type="number" min="0" step=".1" value="2.5"></div>
+<div class="field"><label for="buyerCommission">Buyer's agent commission (%)</label><input id="buyerCommission" type="number" min="0" step=".1" value="2.5"></div>
+</div>
+<h3>Closing costs &amp; fees</h3>
+<div class="fields">
+<div class="field"><label for="sellerClosing">Seller closing costs ($)</label><input id="sellerClosing" type="number" min="0" value="0"></div>
+<div class="field"><label for="buyerClosing">Buyer's closing costs paid by you ($)</label><input id="buyerClosing" type="number" min="0" value="0"></div>
+<div class="field"><label for="title">Title insurance / title fees ($)</label><input id="title" type="number" min="0" value="0"></div>
+<div class="field"><label for="escrow">Escrow fees ($)</label><input id="escrow" type="number" min="0" value="0"></div>
+<div class="field"><label for="transfer">Transfer taxes ($)</label><input id="transfer" type="number" min="0" value="0"></div>
+</div>
+<h3>Credits &amp; other expenses</h3>
+<div class="fields">
+<div class="field"><label for="concessions">Seller concessions ($)</label><input id="concessions" type="number" min="0" value="0"></div>
+<div class="field"><label for="repairs">Repairs / credits to buyer ($)</label><input id="repairs" type="number" min="0" value="0"></div>
+<div class="field"><label for="other">Other fees ($)</label><input id="other" type="number" min="0" value="0"></div>
+</div>
+<div class="actions"><button class="secondary" id="reset">Reset values</button><button class="secondary" onclick="window.print()">Print / Save PDF</button></div>
+</section>
+<section class="card">
+<h2>Minimum selling price</h2>
+<p class="sub" style="font-size:12px;margin:-8px 0 14px">Estimate the price needed to reach a target amount of cash proceeds.</p>
+<div class="field"><label for="target">Desired cash proceeds ($)</label><input id="target" type="number" min="0" step="1000" value="50000"></div>
+<div class="field"><label for="targetBasis">Calculation basis</label><select id="targetBasis" style="width:100%;padding:10px;border:1px solid #d9e0ea;border-radius:9px"><option value="fixed">Keep current commission dollars fixed</option><option value="percent" selected>Keep current commission percentages</option></select></div>
+<div class="hero" style="background:linear-gradient(135deg,#edf4fb,#f4f8fb);color:#17233b;padding:16px"><div class="eyebrow" style="color:#65758c">ESTIMATED MINIMUM SELLING PRICE</div><div class="big" id="minimumPrice">$0</div><div class="muted" style="color:#718096">Assumes other entered costs and debt remain unchanged.</div></div>
+</section>
+</main>
+<aside>
+<section class="card">
+<h2>Your estimated proceeds</h2>
+<div class="hero"><div class="eyebrow">ESTIMATED CASH IN YOUR POCKET</div><div class="big" id="net">$450,000</div><div class="eyebrow">After fees, mortgage payoff and additional debt</div></div>
+<div class="stats">
+<div class="stat"><span>Selling price</span><strong id="statPrice">$450,000</strong></div>
+<div class="stat"><span>Agent commissions</span><strong id="statCommission">$0</strong></div>
+<div class="stat"><span>Other expenses</span><strong id="statFees">$0</strong></div>
+<div class="stat"><span>Total debt payoff</span><strong id="statDebt">$0</strong></div>
+</div>
+<h3>Where the money goes</h3><div class="rows" id="breakdown"></div>
+<p class="notice">Estimates only. Actual settlement amounts may differ. This does not automatically include capital gains taxes, prorated property taxes, HOA balances, moving costs, mortgage interest or other unentered items.</p>
+</section>
+<section class="card">
+<h2>Compare saved scenarios</h2>
+<p class="sub" style="font-size:12px;margin:-8px 0 12px">Save a snapshot, change your assumptions, and save another to compare.</p>
+<button id="save">＋ Save current scenario</button>
+<div id="scenarioList"><p class="notice">No saved scenarios yet.</p></div>
+<div id="comparison"></div>
+<div class="actions"><button class="secondary" id="export">Export scenarios (CSV)</button><button class="secondary" id="clearScenarios">Clear saved scenarios</button></div>
+</section>
+</aside>
+</div>
+<p class="notice">This calculator runs in your browser. Your inputs and saved scenarios are not uploaded to a server. To share your assumptions, use Print / Save PDF or Export scenarios (CSV). To share the calculator itself, send the HTML file.</p>
+</div>
+<script>
+const ids=['scenarioName','price','mortgage','debt','sellerCommission','buyerCommission','sellerClosing','buyerClosing','title','escrow','transfer','concessions','repairs','other'];
+const defaults={scenarioName:'Expected Sale',price:450000,mortgage:0,debt:0,sellerCommission:2.5,buyerCommission:2.5,sellerClosing:0,buyerClosing:0,title:0,escrow:0,transfer:0,concessions:0,repairs:0,other:0};
+let scenarios=[];
+const $=id=>document.getElementById(id);
+const val=id=>Math.max(0,Number($(id).value)||0);
+const fmt=n=>n.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});
+function snapshot(){let x={};ids.forEach(id=>x[id]=$(id).value);return x}
+function calculate(x){
+ const p=Math.max(0,Number(x.price)||0), commission=p*((Number(x.sellerCommission)||0)+(Number(x.buyerCommission)||0))/100;
+ const fees=['sellerClosing','buyerClosing','title','escrow','transfer','concessions','repairs','other'].reduce((a,k)=>a+Math.max(0,Number(x[k])||0),0);
+ const debt=Math.max(0,Number(x.mortgage)||0)+Math.max(0,Number(x.debt)||0);
+ return {p,commission,fees,debt,total:commission+fees+debt,net:p-commission-fees-debt};
+}
+function render(){
+ const x=snapshot(),r=calculate(x),net=$('net');net.textContent=fmt(r.net);net.className='big '+(r.net<0?'negative':'positive');
+ $('statPrice').textContent=fmt(r.p);$('statCommission').textContent=fmt(r.commission);$('statFees').textContent=fmt(r.fees);$('statDebt').textContent=fmt(r.debt);
+ const items=[['Agent commissions',r.commission],['Closing costs and other fees',r.fees],['Mortgage and additional debt',r.debt],['Your estimated proceeds',Math.max(0,r.net)]];
+ $('breakdown').innerHTML=items.map(([label,n],i)=>`<div><div class="line"><span>${label}</span><strong>${fmt(n)}</strong></div><div class="bar"><i class="${i===3?'net':''}" style="width:${r.p>0?Math.min(100,n/r.p*100):0}%"></i></div></div>`).join('');
+ const fixed=r.fees+r.debt,rate=((Number(x.sellerCommission)||0)+(Number(x.buyerCommission)||0))/100,target=val('target');
+ const min=$('targetBasis').value==='fixed'?target+fixed+r.commission:(target+fixed)/(1-rate<.0001?1:1-rate);
+ $('minimumPrice').textContent=fmt(min);
+}
+function renderScenarios(){
+ $('scenarioList').innerHTML=scenarios.length?scenarios.map((s,i)=>{const r=calculate(s);return `<div class="scenario"><div class="scenario-head"><strong>${escapeHtml(s.scenarioName||'Scenario '+(i+1))}</strong><button class="danger" data-delete="${i}">Remove</button></div><div class="line"><span>Sale price</span><strong>${fmt(r.p)}</strong></div><div class="line"><span>Total expenses and debt</span><strong>${fmt(r.total)}</strong></div><div class="line"><span>Cash to you</span><strong class="${r.net<0?'negative':'positive'}">${fmt(r.net)}</strong></div><div class="actions"><button class="secondary" data-load="${i}">Load scenario</button></div></div>`}).join(''):'<p class="notice">No saved scenarios yet.</p>';
+ $('comparison').innerHTML=scenarios.length>1?`<h3>Side-by-side comparison</h3><div style="overflow:auto"><table><thead><tr><th>Scenario</th><th>Sale price</th><th>Net proceeds</th></tr></thead><tbody>${scenarios.map(s=>{let r=calculate(s);return `<tr><td>${escapeHtml(s.scenarioName||'Scenario')}</td><td>${fmt(r.p)}</td><td><strong class="${r.net<0?'negative':'positive'}">${fmt(r.net)}</strong></td></tr>`}).join('')}</tbody></table></div>`:'';
+ document.querySelectorAll('[data-delete]').forEach(b=>b.onclick=()=>{scenarios.splice(+b.dataset.delete,1);renderScenarios()});
+ document.querySelectorAll('[data-load]').forEach(b=>b.onclick=()=>{let s=scenarios[+b.dataset.load];ids.forEach(k=>$(k).value=s[k]??defaults[k]);render()});
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+ids.forEach(id=>$(id).addEventListener('input',render));$('target').addEventListener('input',render);$('targetBasis').addEventListener('change',render);
+$('save').onclick=()=>{scenarios.push(snapshot());renderScenarios()};
+$('reset').onclick=()=>{ids.forEach(k=>$(k).value=defaults[k]);render()};
+$('clearScenarios').onclick=()=>{if(confirm('Clear all saved scenarios?')){scenarios=[];renderScenarios()}};
+$('export').onclick=()=>{if(!scenarios.length){alert('Save at least one scenario first.');return}const cols=[...ids,'estimatedCommission','otherExpenses','totalDebt','totalCostsAndDebt','estimatedNet'];const csv=[cols.join(','),...scenarios.map(s=>{let r=calculate(s);return [...ids.map(k=>s[k]),r.commission,r.fees,r.debt,r.total,r.net].map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')})].join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='home-sale-scenarios.csv';a.click();URL.revokeObjectURL(a.href)};
+render();renderScenarios();
+</script>
+</body></html>
